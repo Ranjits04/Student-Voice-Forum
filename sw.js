@@ -1,12 +1,12 @@
-const CACHE_NAME = "sparkrise-v4";
+const CACHE_NAME = "sparkrise-v5";
 const CORE_ASSETS = [
   "./",
   "./index.html",
-  "./src/styles.css",
-  "./src/app.js",
+  "./styles.css",
+  "./app.js",
   "./manifest.webmanifest",
-  "./assets/icon-192.svg",
-  "./assets/icon-512.svg"
+  "./icon-192.svg",
+  "./icon-512.svg"
 ];
 
 self.addEventListener("install", (event) => {
