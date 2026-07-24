@@ -153,6 +153,11 @@ function renderIssues() {
         <div class="badge-row">
           <span class="badge">${issue.status}</span>
           <span class="badge ${priorityClass(issue.priority)}">${issue.priority}</span>
+          <button
+          class="primary-button resolve-btn"
+          data-resolve="${issue.id}">
+          Resolve Issue
+          </button>
         </div>
         <h3>${escapeHtml(issue.title)}</h3>
         <p class="card-muted">${escapeHtml(issue.description)}</p>
@@ -552,6 +557,31 @@ function wireForms() {
 
 function wireActions() {
   document.addEventListener("click", (event) => {
+    const resolve = event.target.closest("[data-resolve]");
+
+if (resolve) {
+
+    const issue = state.issues.find(
+        i => i.id === resolve.dataset.resolve
+    );
+
+    if (!issue) return;
+
+    issue.status = "Resolved";
+
+    issue.progress = 100;
+
+    issue.response = "Issue has been resolved by the Student Cabinet.";
+
+    persist();
+
+    renderIssues();
+
+    renderDashboard();
+
+    toast("Issue marked as resolved.");
+
+}
     const like = event.target.closest("[data-like]");
     if (like) {
       const idea = state.ideas.find((item) => item.id === Number(like.dataset.like));
