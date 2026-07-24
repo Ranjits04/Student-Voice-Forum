@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="SparkRise icon">
+  <defs>
+    <linearGradient id="g" x1="42" x2="470" y1="36" y2="476" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset=".48" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#F5B833"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#090B17"/>
+  <path d="M106 285c0-86 67-154 150-154s150 68 150 154-67 154-150 154c-27 0-52-7-74-20l-76 25 25-74c-16-24-25-53-25-85Z" fill="url(#g)"/>
+  <path d="M187 257h138M187 318h86M256 132l24 73 79-2-65 45 26 74-64-48-64 48 26-74-65-45 79 2 24-73Z" fill="#fff" opacity=".92"/>
+</svg>

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Raise Your Voice with SparkRise - anonymous student voice forum for issue reporting, ideas, polls, events, and cabinet transparency."
+    />
+    <meta name="theme-color" content="#1f4fff" />
+    <title>Raise Your Voice with SparkRise | Student Voice Forum</title>
+    <link rel="icon" href="assets/icon-192.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="src/styles.css?v=4" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="ambient" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <canvas id="constellation"></canvas>
+    </div>
+
+    <header class="topbar" data-elevated="false">
+      <a class="brand" href="#home" aria-label="SparkRise home">
+        <span class="brand-mark">SR</span>
+        <span>
+          <strong>SparkRise</strong>
+          <small>Student Voice Forum</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#issues">Issues</a>
+        <a href="#ideas">Ideas</a>
+        <a href="#polls">Polls</a>
+        <a href="#events">Events</a>
+        <a href="#dashboard">Cabinet</a>
+      </nav>
+      <div class="topbar-actions">
+        <select id="languageSelect" aria-label="Change language">
+          <option value="en">EN</option>
+          <option value="hi">HI</option>
+          <option value="ta">TA</option>
+        </select>
+        <button class="icon-button" id="searchToggle" aria-label="Open search">Search</button>
+        <button class="icon-button" id="themeToggle" aria-label="Toggle theme">Theme</button>
+        <button class="primary-button small" data-open-panel="issuePanel">Raise Issue</button>
+        <button class="icon-button menu-button" id="menuToggle" aria-label="Open menu">Menu</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero section" id="home">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Raise Your Voice with SparkRise</p>
+          <h1>Your Voice Matters</h1>
+          <p class="subtitle">Student Voice Forum</p>
+          <p class="hero-description">
+            A privacy-first campus platform for anonymous reporting, student ideas,
+            transparent cabinet action, live polls, events, and measurable change.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-button" data-open-panel="issuePanel">Raise Issue</button>
+            <button class="secondary-button" data-scroll="#ideas">Share Idea</button>
+            <button class="secondary-button" data-open-panel="chatPanel">Live Chat</button>
+          </div>
+          <div class="trust-row" aria-label="Platform promises">
+            <span>No login</span>
+            <span>Anonymous by default</span>
+            <span>Tracking IDs</span>
+            <span>Offline local demo data</span>
+          </div>
+        </div>
+        <div class="hero-visual reveal" aria-label="SparkRise live campus dashboard preview">
+          <div class="phone-frame">
+            <div class="status-pill">Live campus pulse</div>
+            <div class="meter">
+              <span>Student happiness</span>
+              <strong id="heroHappiness">No responses yet</strong>
+              <div class="meter-track"><i id="heroHappinessBar" style="width: 0%"></i></div>
+            </div>
+            <div class="mini-feed" id="heroFeed"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-grid section tight" aria-label="Live statistics">
+        <article class="stat-card reveal"><span id="resolvedCount" data-count="0">0</span><p>Issues resolved</p></article>
+        <article class="stat-card reveal"><span id="supportCount" data-count="0">0</span><p>Ideas supported</p></article>
+        <article class="stat-card reveal"><span id="pollCount" data-count="0">0</span><p>Active polls</p></article>
+        <article class="stat-card reveal"><span id="responseCount" data-count="0">0</span><p>Cabinet responses today</p></article>
+      </section>
+
+      <section class="section split" id="mission">
+        <div class="section-copy reveal">
+          <p class="eyebrow">Mission</p>
+          <h2>Make student feedback safe, useful, and visible.</h2>
+          <p>
+            SparkRise gives every student a low-friction way to report issues,
+            suggest improvements, and see what changed because they spoke up.
+          </p>
+        </div>
+        <div class="vision-card reveal">
+          <p class="eyebrow">Vision</p>
+          <h3>A campus where decisions are shaped by student voice.</h3>
+          <p>Anonymous input, transparent timelines, and accountable response metrics help cabinet teams build trust every week.</p>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Why Choose SparkRise</p>
+          <h2>Everything a real student cabinet needs.</h2>
+        </div>
+        <div class="feature-grid" id="featureGrid"></div>
+      </section>
+
+      <section class="section workspace" id="issues">
+        <div class="workspace-header reveal">
+          <div>
+            <p class="eyebrow">Anonymous Issue Submission</p>
+            <h2>Raise an issue without revealing yourself.</h2>
+          </div>
+          <button class="primary-button" data-open-panel="issuePanel">New Issue</button>
+        </div>
+        <div class="issue-board" id="issueBoard"></div>
+      </section>
+
+      <section class="section dashboard-strip">
+        <div class="heatmap reveal">
+          <div class="section-heading compact">
+            <p class="eyebrow">Campus Heatmap</p>
+            <h2>Where attention is needed.</h2>
+          </div>
+          <div class="map-grid" id="heatmap"></div>
+        </div>
+        <div class="happiness reveal">
+          <p class="eyebrow">Student Happiness Meter</p>
+          <h2 id="happinessScore">No responses yet</h2>
+          <input id="happinessSlider" type="range" min="0" max="100" value="0" aria-label="Student happiness meter" />
+          <p>Aggregate anonymous sentiment from feedback, polls, and resolution ratings.</p>
+        </div>
+      </section>
+
+      <section class="section" id="ideas">
+        <div class="workspace-header reveal">
+          <div>
+            <p class="eyebrow">Suggestion Box</p>
+            <h2>Share ideas, support what matters, and watch trends rise.</h2>
+          </div>
+          <form class="idea-form" id="ideaForm">
+            <input id="ideaInput" type="text" placeholder="Suggest a campus improvement" required />
+            <button class="primary-button" type="submit">Submit Idea</button>
+          </form>
+        </div>
+        <div class="filters reveal">
+          <input id="ideaSearch" type="search" placeholder="Search suggestions" />
+          <select id="ideaFilter" aria-label="Filter suggestions">
+            <option value="all">All suggestions</option>
+            <option value="trending">Trending</option>
+            <option value="supported">Most supported</option>
+          </select>
+        </div>
+        <div class="idea-list" id="ideaList"></div>
+      </section>
+
+      <section class="section" id="polls">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Polls & Voting</p>
+          <h2>Anonymous voting with live results.</h2>
+        </div>
+        <div class="poll-grid" id="pollGrid"></div>
+      </section>
+
+      <section class="section split" id="assistant">
+        <div class="ai-panel reveal">
+          <p class="eyebrow">AI Student Assistant</p>
+          <h2>Ask about college life.</h2>
+          <div class="chat-window" id="assistantMessages"></div>
+          <form class="chat-input" id="assistantForm">
+            <input id="assistantInput" type="text" placeholder="Ask about library, exams, placements..." />
+            <button class="primary-button" type="submit">Ask</button>
+          </form>
+        </div>
+        <div class="resource-panel reveal">
+          <p class="eyebrow">Search Everything</p>
+          <input id="globalSearch" type="search" placeholder="Search notices, events, resources, issues" />
+          <div id="globalResults" class="global-results"></div>
+        </div>
+      </section>
+
+      <section class="section" id="events">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Events</p>
+          <h2>Calendar, registration, gallery, feedback, and certificates.</h2>
+        </div>
+        <div class="event-grid" id="eventGrid"></div>
+      </section>
+
+      <section class="section split" id="announcements">
+        <div class="announce-panel reveal">
+          <p class="eyebrow">Announcements</p>
+          <h2>Latest notices and pinned updates.</h2>
+          <div id="announcementList"></div>
+        </div>
+        <div class="roadmap-panel reveal">
+          <p class="eyebrow">Campus Improvement Roadmap</p>
+          <div id="roadmap"></div>
+        </div>
+      </section>
+
+      <section class="section" id="impact">
+        <div class="section-heading reveal">
+          <p class="eyebrow">You Said, We Did</p>
+          <h2>Public progress builds trust.</h2>
+        </div>
+        <div class="impact-timeline" id="impactTimeline"></div>
+      </section>
+
+      <section class="section wall">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Campus Feedback Wall</p>
+          <h2>Anonymous appreciation and success stories.</h2>
+        </div>
+        <div class="wall-grid" id="feedbackWall"></div>
+      </section>
+
+      <section class="section" id="dashboard">
+        <div class="cabinet-dashboard reveal">
+          <div class="dashboard-top">
+            <div>
+              <p class="eyebrow">Cabinet Dashboard</p>
+              <h2>Manage the student voice pipeline.</h2>
+            </div>
+            <button class="secondary-button" id="exportReport">Export Report</button>
+          </div>
+          <div class="analytics-grid" id="analyticsGrid"></div>
+          <div class="dashboard-table-wrap">
+            <table class="dashboard-table">
+              <caption>Issue management queue</caption>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Department</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Response</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section extras">
+        <div class="extra-grid" id="extraGrid"></div>
+      </section>
+
+      <section class="section faq-section">
+        <div class="faq reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2>Questions students ask first.</h2>
+          <div id="faqList"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        <strong>Raise Your Voice with SparkRise</strong>
+        <p>Privacy-first student voice forum for a better campus.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#mission">Mission</a>
+        <a href="#announcements">Notices</a>
+        <a href="#dashboard">Transparency</a>
+      </div>
+    </footer>
+
+    <aside class="side-panel" id="issuePanel" aria-hidden="true" aria-label="Submit an anonymous issue">
+      <div class="panel-card">
+        <button class="icon-button close-panel" data-close-panel="issuePanel" aria-label="Close issue form">×</button>
+        <div class="panel-heading">
+          <p class="eyebrow">Anonymous by default</p>
+          <h2>Raise an Issue</h2>
+          <p>Your identity is not required. A private reference ID will be generated after submission.</p>
+        </div>
+        <form id="issueForm" class="stack-form">
+          <label>Issue Title<input name="title" required minlength="6" placeholder="Briefly describe the issue" /></label>
+          <label>Description<textarea name="description" required minlength="20" rows="5" placeholder="Describe what happened, where, and how it affects students."></textarea></label>
+          <div class="form-grid">
+            <label>Department<select name="department" required></select></label>
+            <label>Category<select name="category" required></select></label>
+            <label>Priority<select name="priority" required></select></label>
+          </div>
+          <label>Upload Evidence<input name="files" type="file" multiple accept="image/*,video/*,.pdf" /></label>
+          <div class="privacy-note">Files are validated by type and size before being stored in this offline demo. Production deployments should connect this boundary to encrypted object storage and malware scanning.</div>
+          <button class="primary-button" type="submit">Submit Anonymous Issue</button>
+        </form>
+        <div class="success-screen" id="issueSuccess" hidden></div>
+      </div>
+    </aside>
+
+    <aside class="side-panel" id="chatPanel" aria-hidden="true" aria-label="Anonymous live chat">
+      <div class="panel-card chat-panel-card">
+        <button class="icon-button close-panel" data-close-panel="chatPanel" aria-label="Close chat">×</button>
+        <div class="panel-heading">
+          <p class="eyebrow">Anonymous Live Chat</p>
+          <h2>Talk to the cabinet desk</h2>
+        </div>
+        <div class="chat-window" id="liveChatMessages"></div>
+        <div class="typing" id="typingIndicator" hidden>Cabinet desk is typing...</div>
+        <form class="chat-input" id="liveChatForm">
+          <input id="liveChatInput" type="text" placeholder="Type anonymously..." />
+          <label class="file-chip">Image<input id="chatImage" type="file" accept="image/*" /></label>
+          <button class="secondary-button" type="button" id="emojiButton">+</button>
+          <button class="primary-button" type="submit">Send</button>
+        </form>
+        <button class="ghost-button full" id="endChat">End Chat</button>
+      </div>
+    </aside>
+
+    <div class="search-modal" id="searchModal" aria-hidden="true" role="dialog" aria-label="Search SparkRise">
+      <div class="search-card">
+        <button class="icon-button close-search" id="closeSearch" aria-label="Close search">×</button>
+        <input id="modalSearchInput" type="search" placeholder="Search issues, ideas, events, notices..." />
+        <div id="modalSearchResults"></div>
+      </div>
+    </div>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+    <script src="src/app.js?v=4" type="module"></script>
+  </body>
+</html>
